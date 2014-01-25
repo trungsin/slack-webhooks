@@ -1,0 +1,9 @@
+# Please configure these variables
+slack_url: 'https://xeonys.slack.com'
+
+# Configuration for available services
+
+gitlab:
+    channel: general
+    token: 'PleaseInsertTheSlackIncomingWebHooksTokenHere'
+    color: 'good'

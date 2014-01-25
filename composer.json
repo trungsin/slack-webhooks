@@ -1,0 +1,7 @@
+{
+    "require": {
+        "silex/silex": "~1.1",
+        "guzzle/guzzle": "3.8.*@dev",
+        "deralex/yaml-config-service-provider": "1.0.*@dev"
+    }
+}
