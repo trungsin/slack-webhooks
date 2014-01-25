@@ -1,9 +1,10 @@
-# Please configure these variables
-slack_url: 'https://xeonys.slack.com'
+# Slack and GitLab Configuration.
 
-# Configuration for available services
+slack:
+    team:         your-organization # Team name (example for https://your-organization.slack.com)
+    channel:      general
+    push_message: "New push on <%s|%s> (%d Commits):"
+    color:        good
 
 gitlab:
-    channel: general
-    token: 'PleaseInsertTheSlackIncomingWebHooksTokenHere'
-    color: 'good'
+    token:        PleaseInsertTheSlackIncomingWebHooksTokenHere
