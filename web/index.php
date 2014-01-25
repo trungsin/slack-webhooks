@@ -14,7 +14,8 @@ $app->register(
     )
 );
 
-$app->post('/slack-proxy/code-push', function(Request $request) use ($app) {
+/* Route for gitlab_push */
+$app->post('/slack-proxy/gitlab-push', function(Request $request) use ($app) {
     $slackUrl = sprintf('https://%s.slack.com', $app['config']['slack']['team']);
     $content  = json_decode($request->getContent());
     $fields   = array();
@@ -31,26 +32,28 @@ $app->post('/slack-proxy/code-push', function(Request $request) use ($app) {
     }
 
     $message = sprintf(
-        $app['config']['slack']['push_message'],
+        $app['config']['gitlab_push']['push_message'],
         $content->repository->homepage,
         $content->repository->name,
         $content->total_commits_count
     );
 
     $params = [
-        'channel'  => '#'.$app['config']['slack']['channel'],
+        'channel'  => '#'.$app['config']['gitlab_push']['channel'],
         'username' => $content->user_name,
-        "fallback" => $message,
-        'text'     => $message,
+        'fallback' => $message,
+        'pretext' => $message,
         'fields'   => $fields,
-        'color'    => $app['config']['slack']['color'],
+        'color'    => $app['config']['gitlab_push']['color'],
     ];
 
     $client  = new Client($slackUrl);
     $request = $client->post(
-        '/services/hooks/incoming-webhook?token='.$app['config']['gitlab']['token']
+        '/services/hooks/incoming-webhook?token='.$app['config']['gitlab_push']['token']
     );
-    $request->setBody(json_encode($params), 'application/json');
+    $request->setBody(['payload' => json_encode($params)], 'application/x-www-form-urlencoded');
+
+    var_dump(['payload' => json_encode($params)]);
 
     $response = $request->send();
 

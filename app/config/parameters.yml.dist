@@ -1,10 +1,14 @@
 # Slack and GitLab Configuration.
 
 slack:
-    team:         your-organization # Team name (example for https://your-organization.slack.com)
+    team:            your-organization # Team name (example for https://your-organization.slack.com)
+    default_channel: general
+
+gitlab_push:
     channel:      general
     push_message: "New push on <%s|%s> (%d Commits):"
+    token:        PleaseInsertTheSlackIncomingWebHooksTokenHere
     color:        good
 
-gitlab:
-    token:        PleaseInsertTheSlackIncomingWebHooksTokenHere
+# @todo : Add others Income/outgoing services parameters
+
