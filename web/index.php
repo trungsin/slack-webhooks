@@ -53,8 +53,6 @@ $app->post('/slack-proxy/gitlab-push', function(Request $request) use ($app) {
     );
     $request->setBody(['payload' => json_encode($params)], 'application/x-www-form-urlencoded');
 
-    var_dump(['payload' => json_encode($params)]);
-
     $response = $request->send();
 
     return $response;
