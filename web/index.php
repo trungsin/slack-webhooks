@@ -77,7 +77,7 @@ $app->post('/slack-proxy/gitlab-issue', function(Request $request) use ($app) {
 
     $state = $issue->state;
 
-    if ($state == 'open')
+    if ($state == 'opened')
         $messageConfig = 'issue_create_message';
     else
         $messageConfig = 'issue_update_message';
