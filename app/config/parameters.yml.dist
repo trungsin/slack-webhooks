@@ -10,5 +10,12 @@ gitlab_push:
     token:        PleaseInsertTheSlackIncomingWebHooksTokenHere
     color:        good
 
+gitlab_issue:
+    channel:                general
+    issue_create_message:   "New issue #%s created:"
+    issue_update_message:   "Issue #%s is updated:"
+    token:                  PleaseInsertTheSlackIncomingWebHooksTokenHere
+    color:                  '#EB4D5C'
+
 # @todo : Add others Income/outgoing services parameters
 
