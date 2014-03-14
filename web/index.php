@@ -58,4 +58,53 @@ $app->post('/slack-proxy/gitlab-push', function(Request $request) use ($app) {
     return $response;
 });
 
+/* Route for gitlab_issue */
+$app->post('/slack-proxy/gitlab-issue', function(Request $request) use ($app) {
+    $slackUrl = sprintf('https://%s.slack.com', $app['config']['slack']['team']);
+    $content  = json_decode($request->getContent());
+    $issue = $content->object_attributes;
+
+    $fields[] = [
+        'title' => 'Title',
+        'value' => $issue->title,
+        'short' => true
+    ];
+
+    $fields[] = [
+        'title' => 'Description',
+        'value' => $issue->description
+    ];
+
+    $state = $issue->state;
+
+    if ($state == 'open')
+        $messageConfig = 'issue_create_message';
+    else
+        $messageConfig = 'issue_update_message';
+
+    $message = sprintf(
+        $app['config']['gitlab_issue'][$messageConfig],
+        $issue->id
+    );
+
+    $params = [
+        'channel'  => '#'.$app['config']['gitlab_issue']['channel'],
+        'username' => $app['config']['gitlab_issue']['username'],
+        'fallback' => $message,
+        'pretext' => $message,
+        'fields'   => $fields,
+        'color'    => $app['config']['gitlab_issue']['color'],
+    ];
+
+    $client  = new Client($slackUrl);
+    $request = $client->post(
+        '/services/hooks/incoming-webhook?token='.$app['config']['gitlab_issue']['token']
+    );
+    $request->setBody(['payload' => json_encode($params)], 'application/x-www-form-urlencoded');
+
+    $response = $request->send();
+
+    return $response;
+});
+
 $app->run();
